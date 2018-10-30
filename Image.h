@@ -53,6 +53,3 @@ void I_move       (Image *img, int x, int y);
 void I_draw       (Image *img);
 
 #endif
-
-
-

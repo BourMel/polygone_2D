@@ -17,6 +17,7 @@
 #include <GL/gl.h>
 
 #include "Image.h"
+#include "bresenham.h"
 
 Image *img;
 
@@ -31,7 +32,8 @@ void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-	I_draw(img);
+    I_bresenham(img, 50, 20, 100, 40);
+    I_draw(img);
 
     glutSwapBuffers();
 }
@@ -116,9 +118,6 @@ int main(int argc, char **argv)
 			largeur = atoi(argv[1]);
 			hauteur = atoi(argv[2]);
 			img = I_new(largeur,hauteur);
-			Color rouge = C_new(100,0,0);
-			Color blanc = C_new(200,200,255);
-			I_checker(img,rouge,blanc,50);
 		}
 		int windowPosX = 100, windowPosY = 100;
 
