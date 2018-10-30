@@ -123,3 +123,23 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
     }
   }
 }
+
+/**
+ * A partir d'un tableau de coordonnées, trace une ligne brisée reliant
+ * un ensemble de points
+ * Params:
+ * Image dans laquelle dessiner
+ * Tableau contenant des paires de coordonnées (x, y)
+ * Taille du tableau
+ */
+void I_ligne_brisee(Image *img, int tableau[], int taille) {
+
+  for(int i=0; i<taille-2; i+=2) {
+    I_bresenham(
+      img,
+      tableau[i], tableau[i+1],
+      tableau[i+2], tableau[i+3]
+    );
+  }
+
+}

@@ -32,7 +32,21 @@ void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    I_bresenham(img, 50, 20, 100, 40);
+    // définition des 4 points de la ligne brisée
+    int nb_points = 8;
+    int points[nb_points];
+
+    points[0] = 40;
+    points[1] = 40;
+    points[2] = 80;
+    points[3] = 80;
+    points[4] = 120;
+    points[5] = 20;
+    points[6] = 55;
+    points[7] = 61;
+
+    I_ligne_brisee(img, points, nb_points);
+
     I_draw(img);
 
     glutSwapBuffers();

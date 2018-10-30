@@ -12,5 +12,8 @@ void octant1_to_Z2 (int xA, int yA, int xB, int yB, int x_1o, int y_1o, int *x, 
 // tracé d'une droite de Bresenham
 void I_bresenham(Image *img, int xA, int yA, int xB, int yB);
 
+// tracé d'une ligne brisée reliant un ensemble de points
+void I_ligne_brisee(Image *img, int tableau[], int taille);
+
 
 #endif
