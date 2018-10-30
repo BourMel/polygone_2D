@@ -1,4 +1,5 @@
 #include "Image.h"
+#include "bresenham.h"
 
 /**
  * A partir de 2 points quelconques, cette fonction utilise la symétrie
@@ -133,6 +134,7 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
  * Taille du tableau
  */
 void I_ligne_brisee(Image *img, int tableau[], int taille) {
+  printf("taille: %d\n", taille);
 
   for(int i=0; i<taille-2; i+=2) {
     I_bresenham(
@@ -141,5 +143,18 @@ void I_ligne_brisee(Image *img, int tableau[], int taille) {
       tableau[i+2], tableau[i+3]
     );
   }
+}
 
+/**
+ * Ajout un point à un objet de la structure "Line"
+ * Params:
+ * line l'adresse de la ligne à modifier
+ * x la coordonnée en x du nouveau point
+ * y la coordonnée en y du nouveau point
+ */
+void add_point_to_line(line *l, int x, int y) {
+	l->points[l->nb_valeurs] = x;
+	l->points[l->nb_valeurs +1] = y;
+
+	l->nb_valeurs +=2;
 }

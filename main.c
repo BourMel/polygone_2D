@@ -20,6 +20,7 @@
 #include "bresenham.h"
 
 Image *img;
+line *ligne_brisee;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -32,23 +33,9 @@ void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // définition des 4 points de la ligne brisée
-    int nb_points = 8;
-    int points[nb_points];
-
-    points[0] = 40;
-    points[1] = 40;
-    points[2] = 80;
-    points[3] = 80;
-    points[4] = 120;
-    points[5] = 20;
-    points[6] = 55;
-    points[7] = 61;
-
-    I_ligne_brisee(img, points, nb_points);
+    I_ligne_brisee(img, ligne_brisee->points, ligne_brisee->nb_valeurs);
 
     I_draw(img);
-
     glutSwapBuffers();
 }
 
@@ -60,8 +47,9 @@ void display_CB()
 
 void mouse_CB(int button, int state, int x, int y)
 {
-	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN))
-		I_focusPoint(img,x,img->_height-y);
+	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN)) {
+    add_point_to_line(ligne_brisee, x, y);
+  }
 
 	glutPostRedisplay();
 }
@@ -132,6 +120,10 @@ int main(int argc, char **argv)
 			largeur = atoi(argv[1]);
 			hauteur = atoi(argv[2]);
 			img = I_new(largeur,hauteur);
+
+      // initialisation de la ligne brisée
+      ligne_brisee = malloc(sizeof(struct struct_line));
+      ligne_brisee->nb_valeurs = 0;
 		}
 		int windowPosX = 100, windowPosY = 100;
 
