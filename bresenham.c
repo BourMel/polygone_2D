@@ -134,8 +134,6 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
  * Taille du tableau
  */
 void I_ligne_brisee(Image *img, int tableau[], int taille) {
-  printf("taille: %d\n", taille);
-
   for(int i=0; i<taille-2; i+=2) {
     I_bresenham(
       img,
@@ -146,6 +144,21 @@ void I_ligne_brisee(Image *img, int tableau[], int taille) {
 }
 
 /**
+ * Affiche un tableau de coordonnées
+ * Params:
+ * Tableau contenant des paires de coordonnées
+ * Taille du tableau
+ */
+void display_ligne_brisee(int tableau[], int taille) {
+  printf("LIGNE_BRISEE___________________________\n");
+
+  for(int i=0; i<taille; i+=2) {
+      printf("[X = %d Y = %d]", tableau[i], tableau[i+1]);
+  }
+  printf("\n");
+}
+
+/**
  * Ajout un point à un objet de la structure "Line"
  * Params:
  * line l'adresse de la ligne à modifier
@@ -153,8 +166,25 @@ void I_ligne_brisee(Image *img, int tableau[], int taille) {
  * y la coordonnée en y du nouveau point
  */
 void add_point_to_line(line *l, int x, int y) {
-	l->points[l->nb_valeurs] = x;
-	l->points[l->nb_valeurs +1] = y;
 
+  l->points[l->nb_valeurs] = x;
+  l->points[l->nb_valeurs +1] = y;
 	l->nb_valeurs +=2;
+  printf("Ajout de 2 valeurs\n");
+  printf("Valeurs ajoutées : %d, %d \n", l->points[l->nb_valeurs-2], l->points[l->nb_valeurs-1]);
+
+}
+
+
+/**
+ * Enlève le dernier point d'un objet de la structure "Line"
+ * Params:
+ * line l'adresse de la ligne à modifier
+ */
+void remove_point_from_line(line *l) {
+	l->points[l->nb_valeurs -1] = 0;
+	l->points[l->nb_valeurs -2] = 0;
+
+	l->nb_valeurs -=2;
+  printf("Remove 2 valeurs\n");
 }

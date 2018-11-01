@@ -15,12 +15,14 @@
 #include <stdio.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
+#include <stdbool.h>
 
 #include "Image.h"
 #include "bresenham.h"
 
 Image *img;
 line *ligne_brisee;
+bool poly = false;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -32,6 +34,9 @@ line *ligne_brisee;
 void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    printf("Affichage :\n");
+    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
 
     I_ligne_brisee(img, ligne_brisee->points, ligne_brisee->nb_valeurs);
 
@@ -68,8 +73,37 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'z' : I_zoom(img,2.0); break;
 	case 'Z' : I_zoom(img,0.5); break;
 	case 'i' : I_zoomInit(img); break;
+  case 'c' :
+
+    printf("DEBUT******************\n");
+    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
+
+    if(poly) {
+      remove_point_from_line(ligne_brisee);
+
+
+      poly = false;
+    } else {
+
+      printf("Premières valeurs : %d, %d \n", ligne_brisee->points[0],
+      ligne_brisee->points[1]);
+
+      add_point_to_line(
+        ligne_brisee,
+        ligne_brisee->points[0], // first x value
+        ligne_brisee->points[1] // first y value
+      );
+
+      poly = true;
+    }
+
+    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
+    printf("FIN******************\n");
+
+    break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
 	}
+
 	glutPostRedisplay();
 }
 
@@ -121,9 +155,13 @@ int main(int argc, char **argv)
 			hauteur = atoi(argv[2]);
 			img = I_new(largeur,hauteur);
 
-      // initialisation de la ligne brisée
+      // initialisation de la ligne brisée et de ses points d'origine s'il y en a
       ligne_brisee = malloc(sizeof(struct struct_line));
       ligne_brisee->nb_valeurs = 0;
+      add_point_to_line(ligne_brisee, 5, 42);
+      add_point_to_line(ligne_brisee, 10, 84);
+      add_point_to_line(ligne_brisee, 74, 18);
+      add_point_to_line(ligne_brisee, 84, 48);
 		}
 		int windowPosX = 100, windowPosY = 100;
 

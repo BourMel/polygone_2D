@@ -19,9 +19,11 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB);
 
 // tracé d'une ligne brisée reliant un ensemble de points
 void I_ligne_brisee(Image *img, int tableau[], int taille);
+void display_ligne_brisee(int tableau[], int taille);
 
 // ajout à un point d'une structure "line"
 void add_point_to_line(line *l, int x, int y);
+void remove_point_from_line(line *l);
 
 
 #endif
