@@ -19,6 +19,7 @@
 
 #include "Image.h"
 #include "bresenham.h"
+#include "scan_line.h"
 
 Image *img;
 line *ligne_brisee;
@@ -73,6 +74,14 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'z' : I_zoom(img,2.0); break;
 	case 'Z' : I_zoom(img,0.5); break;
 	case 'i' : I_zoomInit(img); break;
+  case 'f' :
+    printf("Poly\n");
+    int minX = getXmin(ligne_brisee);
+    int minY = getYmin(ligne_brisee);
+    int maxX = getXmax(ligne_brisee);
+    int maxY = getYmax(ligne_brisee);
+
+    break;
   case 'c' :
 
     // printf("DEBUT******************\n");
