@@ -35,8 +35,8 @@ void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    printf("Affichage :\n");
-    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
+    // printf("Affichage :\n");
+    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
 
     I_ligne_brisee(img, ligne_brisee->points, ligne_brisee->nb_valeurs);
 
@@ -75,18 +75,16 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'i' : I_zoomInit(img); break;
   case 'c' :
 
-    printf("DEBUT******************\n");
-    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
+    // printf("DEBUT******************\n");
+    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
 
     if(poly) {
       remove_point_from_line(ligne_brisee);
-
-
       poly = false;
     } else {
 
-      printf("Premières valeurs : %d, %d \n", ligne_brisee->points[0],
-      ligne_brisee->points[1]);
+      // printf("Premières valeurs : %d, %d \n", ligne_brisee->points[0],
+      // ligne_brisee->points[1]);
 
       add_point_to_line(
         ligne_brisee,
@@ -97,8 +95,8 @@ void keyboard_CB(unsigned char key, int x, int y)
       poly = true;
     }
 
-    display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
-    printf("FIN******************\n");
+    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
+    // printf("FIN******************\n");
 
     break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);

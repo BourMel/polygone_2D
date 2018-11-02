@@ -170,8 +170,8 @@ void add_point_to_line(line *l, int x, int y) {
   l->points[l->nb_valeurs] = x;
   l->points[l->nb_valeurs +1] = y;
 	l->nb_valeurs +=2;
-  printf("Ajout de 2 valeurs\n");
-  printf("Valeurs ajoutées : %d, %d \n", l->points[l->nb_valeurs-2], l->points[l->nb_valeurs-1]);
+  // printf("Ajout de 2 valeurs\n");
+  // printf("Valeurs ajoutées : %d, %d \n", l->points[l->nb_valeurs-2], l->points[l->nb_valeurs-1]);
 
 }
 
@@ -186,5 +186,5 @@ void remove_point_from_line(line *l) {
 	l->points[l->nb_valeurs -2] = 0;
 
 	l->nb_valeurs -=2;
-  printf("Remove 2 valeurs\n");
+  // printf("Remove 2 valeurs\n");
 }
