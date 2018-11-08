@@ -56,6 +56,8 @@ bool isInPoly(int x, int y, line *l) {
 }
 
 bool intersect(int xA, int yA, int xB, int yB, int xC, int yC, int xD, int yD) {
+
+
   return false;
 }
 

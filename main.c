@@ -36,9 +36,10 @@ void display_CB()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // printf("Affichage :\n");
-    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
-
+    // remplit l'image de noir pour "effacer"
+    Color n = {0,0,0};
+    I_fill(img, n);
+    
     I_ligne_brisee(img, ligne_brisee->points, ligne_brisee->nb_valeurs);
 
     I_draw(img);
@@ -185,7 +186,7 @@ int main(int argc, char **argv)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		glOrtho(0,largeur,0,hauteur,-1,1);
+		glOrtho(0,largeur,hauteur,0,-1,1);
 
 		glutDisplayFunc(display_CB);
 		glutKeyboardFunc(keyboard_CB);
