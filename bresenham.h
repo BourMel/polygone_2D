@@ -32,6 +32,7 @@ void I_ligne_brisee(Image *img, poly *polygone);
 
 // @TODO
 void insert(poly *polygone, int x, int y);
+void insert_order(poly *polygone, int x, int y);
 
 // void display_ligne_brisee(int tableau[], int taille);
 

@@ -138,7 +138,6 @@ void I_ligne_brisee(Image *img, poly *polygone) {
   if(polygone != NULL) {
     if(polygone->first != NULL) {
       node *current_node = polygone->first;
-      int i = 1;
 
       while(current_node->next != NULL) {
         I_bresenham(
@@ -148,7 +147,6 @@ void I_ligne_brisee(Image *img, poly *polygone) {
           current_node->next->p.x,
           current_node->next->p.y
         );
-        i++;
         current_node = current_node->next;
       }
     }
@@ -185,3 +183,54 @@ void I_ligne_brisee(Image *img, poly *polygone) {
 
    polygone->nb++;
  }
+
+ /**
+  * Insertion d'un point en respectant l'ordre des x
+  * dans une structure de type polygone
+  */
+void insert_order(poly *polygone, int x, int y) {
+  node *new_node = malloc(sizeof(struct struct_node));
+  if(new_node == NULL) {
+    exit(EXIT_FAILURE);
+  }
+
+  point new_point = {x, y};
+  new_node->next = NULL;
+  new_node->p = new_point;
+
+  if(polygone != NULL) {
+    // si vide
+    if(polygone->nb == 0) {
+      polygone->first = new_node;
+      polygone->last = new_node;
+    }
+    if(polygone->nb == 1) {
+      if(x >= polygone->first->p.x) {
+        polygone->first->next = new_node;
+        polygone->last = new_node;
+      }
+      else {
+        new_node->next = polygone->first;
+        polygone->first = new_node;
+      }
+    } else {
+      // parcourt
+      if(polygone->first != NULL) {
+        node *current_node = polygone->first;
+
+        while(current_node->next != NULL) {
+          if(x >= current_node->p.x
+          && x < current_node->next->p.x) {
+            new_node->next = current_node->next;
+            current_node->next = new_node;
+            break;
+          } else {
+            current_node = current_node->next;
+          }
+        }
+      }
+    }
+  }
+
+  polygone->nb++;
+}

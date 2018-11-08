@@ -24,4 +24,9 @@ bool pointsAligned(int xA, int yA, int xB, int yB, int xC, int yC);
 // teste si un point est entre deux autre
 bool pointBetween(int xA, int yA, int xB, int yB, int xC, int yC);
 
+int get_line_intersection(int p0_x, int p0_y, int p1_x, int p1_y,
+    int p2_x, int p2_y, int p3_x, int p3_y, int *i_x, int *i_y);
+
+void scan_line(Image *img, poly *polygone);
+
 #endif

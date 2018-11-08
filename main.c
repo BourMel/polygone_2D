@@ -43,6 +43,10 @@ void display_CB()
 
     I_ligne_brisee(img, polygone);
 
+    // int *inter_x = NULL;
+    // int *inter_y = NULL;
+    // int inter = get_line_intersection(5, 5, 10, 5, 2, 0, 2, 40, inter_x, inter_y);
+
     if(is_poly)
     {
         I_bresenham(img,
@@ -86,10 +90,9 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'i' : I_zoomInit(img); break;
   case 'f' :
     printf("Poly\n");
-    // int minX = getXmin(ligne_brisee);
-    // int minY = getYmin(ligne_brisee);
-    // int maxX = getXmax(ligne_brisee);
-    // int maxY = getYmax(ligne_brisee);
+    //calcul boite englobante @TODO
+
+    scan_line(img, polygone);
 
     break;
   case 'c' :
@@ -165,6 +168,10 @@ int main(int argc, char **argv)
       polygone->nb = 0;
       polygone->first = NULL;
       polygone->last = NULL;
+
+      insert_order(polygone, 1,1);
+      insert_order(polygone, 150,150);
+      insert_order(polygone, 100,2);
 
       // ligne_brisee = malloc(sizeof(struct struct_line));
       // ligne_brisee->nb_valeurs = 0;
