@@ -75,10 +75,8 @@ int get_line_intersection(int Ax, int Ay, int Bx, int By,
           // Collision detected
           if (i_x != NULL)
               *i_x = (int)(Ax + (s * ABx));
-          printf("%d, %f, %f\n", Ax, s, ABx );
           if (i_y != NULL)
               *i_y = (int)(Ay + (s * ABy));
-          printf("get %d, %d\n",*i_x, *i_y );
           return 1;
       }
     }
@@ -130,9 +128,10 @@ void scan_line(Image *img, poly *polygone) {
             current_node->next->p.x, current_node->next->p.y,
             inter_x, inter_y
           );
-          printf("%d, %d\n",*inter_x, *inter_y );
           // on stocke les intersections
           if(has_intersection) {
+            //printf("Inter\n");
+            //printf("%d, %d\n",*inter_x, *inter_y );
             insert_order(liste_inter, *inter_x, *inter_y);
           }
 
@@ -147,6 +146,8 @@ void scan_line(Image *img, poly *polygone) {
           inter_x, inter_y
         );
         if(has_intersection) {
+          //printf("Inter\n");
+          //printf("%d, %d\n",*inter_x, *inter_y );
           insert_order(liste_inter, *inter_x, *inter_y);
         }
       }
@@ -159,6 +160,7 @@ void scan_line(Image *img, poly *polygone) {
       node *current_node = liste_inter->first;
 
       while(current_node->next != NULL) {
+        //printf("%d,%d\n",current_node->p.x,current_node->p.y );
         I_bresenham(
           img,
           current_node->p.x,

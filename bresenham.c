@@ -184,6 +184,23 @@ void I_ligne_brisee(Image *img, poly *polygone) {
    polygone->nb++;
  }
 
+void display(poly *polygone) {
+  printf("Poly :");
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      node *current_node = polygone->first;
+      if(polygone->nb == 1)
+        printf("%d,%d | ",current_node->p.x,current_node->p.y );
+      while(current_node->next != NULL) {
+        printf("%d,%d | ",current_node->p.x,current_node->p.y );
+        current_node = current_node->next;
+      }
+      printf("%d,%d | ",current_node->p.x,current_node->p.y );
+    }
+  }
+  printf("\n");
+}
+
  /**
   * Insertion d'un point en respectant l'ordre des x
   * dans une structure de type polygone
@@ -203,15 +220,21 @@ void insert_order(poly *polygone, int x, int y) {
     if(polygone->nb == 0) {
       polygone->first = new_node;
       polygone->last = new_node;
+      // printf("Insert x:%d, y:%d\n",x,y);
+      // display(polygone);
     }
-    if(polygone->nb == 1) {
+    else if(polygone->nb == 1) {
       if(x >= polygone->first->p.x) {
         polygone->first->next = new_node;
         polygone->last = new_node;
+        // printf("Insert x:%d, y:%d\n",x,y);
+        // display(polygone);
       }
       else {
         new_node->next = polygone->first;
         polygone->first = new_node;
+        // printf("Insert x:%d, y:%d\n",x,y);
+        // display(polygone);
       }
     } else {
       // parcourt
@@ -220,11 +243,26 @@ void insert_order(poly *polygone, int x, int y) {
 
         while(current_node->next != NULL) {
           if(x >= current_node->p.x
-          && x < current_node->next->p.x) {
+          && x <= current_node->next->p.x) {
             new_node->next = current_node->next;
             current_node->next = new_node;
+            // printf("Insert x:%d, y:%d\n",x,y);
+            // display(polygone);
             break;
-          } else {
+          } else if(x <= current_node->p.x) {
+            new_node->next = polygone->first;
+            polygone->first = new_node;
+            // printf("Insert x:%d, y:%d\n",x,y);
+            // display(polygone);
+            break;
+          } else if(current_node->next->next == NULL) {
+            current_node->next->next = new_node;
+            polygone->last = new_node;
+            // printf("Insert x:%d, y:%d\n",x,y);
+            // display(polygone);
+            break;
+          }
+          else {
             current_node = current_node->next;
           }
         }

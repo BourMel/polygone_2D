@@ -25,6 +25,7 @@ Image *img;
 // line *ligne_brisee;
 poly *polygone;
 bool is_poly = false;
+bool filled = false;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -54,6 +55,10 @@ void display_CB()
           polygone->last->p.y,
           polygone->first->p.x,
           polygone->first->p.y);
+    }
+    if(filled)
+    {
+      scan_line(img, polygone);
     }
 
     I_draw(img);
@@ -92,7 +97,7 @@ void keyboard_CB(unsigned char key, int x, int y)
     printf("Poly\n");
     //calcul boite englobante @TODO
 
-    scan_line(img, polygone);
+    filled = !filled;
 
     break;
   case 'c' :
@@ -168,10 +173,6 @@ int main(int argc, char **argv)
       polygone->nb = 0;
       polygone->first = NULL;
       polygone->last = NULL;
-
-      insert_order(polygone, 1,1);
-      insert_order(polygone, 150,150);
-      insert_order(polygone, 100,2);
 
       // ligne_brisee = malloc(sizeof(struct struct_line));
       // ligne_brisee->nb_valeurs = 0;
