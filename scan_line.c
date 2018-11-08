@@ -1,59 +1,59 @@
 #include "Image.h"
 #include "bresenham.h"
 #include "scan_line.h"
+//
+// int getXmin(line *l) {
+//   int min = l->points[0];
+//
+//   for(int i=2; i<l->nb_valeurs; i+=2) {
+//     if(l->points[i] < min) {
+//       min = l->points[i];
+//     }
+//   }
+//
+//   return min;
+// }
+//
+// int getYmin(line *l) {
+//   int min = l->points[1];
+//
+//   for(int i=3; i<l->nb_valeurs-1; i+=2) {
+//     if(l->points[i] < min) {
+//       min = l->points[i];
+//     }
+//   }
+//
+//   return min;
+// }
+//
+// int getXmax(line *l) {
+//   int max = l->points[0];
+//
+//   for(int i=2; i<l->nb_valeurs; i+=2) {
+//     if(l->points[i] > max) {
+//       max = l->points[i];
+//     }
+//   }
+//
+//   return max;
+// }
+//
+// int getYmax(line *l) {
+//   int max = l->points[1];
+//
+//   for(int i=3; i<l->nb_valeurs-1; i+=2) {
+//     if(l->points[i] > max) {
+//       max = l->points[i];
+//     }
+//   }
+//
+//   return max;
+// }
 
-int getXmin(line *l) {
-  int min = l->points[0];
-
-  for(int i=2; i<l->nb_valeurs; i+=2) {
-    if(l->points[i] < min) {
-      min = l->points[i];
-    }
-  }
-
-  return min;
-}
-
-int getYmin(line *l) {
-  int min = l->points[1];
-
-  for(int i=3; i<l->nb_valeurs-1; i+=2) {
-    if(l->points[i] < min) {
-      min = l->points[i];
-    }
-  }
-
-  return min;
-}
-
-int getXmax(line *l) {
-  int max = l->points[0];
-
-  for(int i=2; i<l->nb_valeurs; i+=2) {
-    if(l->points[i] > max) {
-      max = l->points[i];
-    }
-  }
-
-  return max;
-}
-
-int getYmax(line *l) {
-  int max = l->points[1];
-
-  for(int i=3; i<l->nb_valeurs-1; i+=2) {
-    if(l->points[i] > max) {
-      max = l->points[i];
-    }
-  }
-
-  return max;
-}
-
-bool isInPoly(int x, int y, line *l) {
-  // pour chaque segment, fait un test d'intersection
-  return false;
-}
+// bool isInPoly(int x, int y, line *l) {
+//   // pour chaque segment, fait un test d'intersection
+//   return false;
+// }
 
 bool intersect(int xA, int yA, int xB, int yB, int xC, int yC, int xD, int yD) {
 

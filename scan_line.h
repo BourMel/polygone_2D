@@ -6,13 +6,13 @@
 #include <GL/gl.h>
 #include <stdbool.h>
 
-int getXmin(line *l);
-int getYmin(line *l);
-int getXmax(line *l);
-int getYmax(line *l);
+// int getXmin(line *l);
+// int getYmin(line *l);
+// int getXmax(line *l);
+// int getYmax(line *l);
 
 // compte les intersections d'une droite avec un polygone
-bool isInPoly(int x, int y, line *l);
+// bool isInPoly(int x, int y, line *l);
 
 // teste l'intersection entre deux droites
 bool intersect(int xA, int yA, int xB, int yB, int xC, int yC, int xD, int yD);

@@ -22,8 +22,9 @@
 #include "scan_line.h"
 
 Image *img;
-line *ligne_brisee;
-bool poly = false;
+// line *ligne_brisee;
+poly *polygone;
+bool is_poly = false;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -39,8 +40,8 @@ void display_CB()
     // remplit l'image de noir pour "effacer"
     Color n = {0,0,0};
     I_fill(img, n);
-    
-    I_ligne_brisee(img, ligne_brisee->points, ligne_brisee->nb_valeurs);
+
+    I_ligne_brisee(img, polygone);
 
     I_draw(img);
     glutSwapBuffers();
@@ -55,7 +56,7 @@ void display_CB()
 void mouse_CB(int button, int state, int x, int y)
 {
 	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN)) {
-    add_point_to_line(ligne_brisee, x, y);
+    insert(polygone, x, y);
   }
 
 	glutPostRedisplay();
@@ -68,7 +69,6 @@ void mouse_CB(int button, int state, int x, int y)
 
 void keyboard_CB(unsigned char key, int x, int y)
 {
-	// fprintf(stderr,"key=%d\n",key);
 	switch(key)
 	{
 	case 27 : exit(1); break;
@@ -77,36 +77,27 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'i' : I_zoomInit(img); break;
   case 'f' :
     printf("Poly\n");
-    int minX = getXmin(ligne_brisee);
-    int minY = getYmin(ligne_brisee);
-    int maxX = getXmax(ligne_brisee);
-    int maxY = getYmax(ligne_brisee);
+    // int minX = getXmin(ligne_brisee);
+    // int minY = getYmin(ligne_brisee);
+    // int maxX = getXmax(ligne_brisee);
+    // int maxY = getYmax(ligne_brisee);
 
     break;
   case 'c' :
 
-    // printf("DEBUT******************\n");
-    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
-
-    if(poly) {
-      remove_point_from_line(ligne_brisee);
-      poly = false;
+    if(is_poly) {
+      // remove_point_from_line(ligne_brisee);
+      is_poly = false;
     } else {
 
-      // printf("Premières valeurs : %d, %d \n", ligne_brisee->points[0],
-      // ligne_brisee->points[1]);
+      // add_point_to_line(
+      //   ligne_brisee,
+      //   ligne_brisee->points[0], // first x value
+      //   ligne_brisee->points[1] // first y value
+      // );
 
-      add_point_to_line(
-        ligne_brisee,
-        ligne_brisee->points[0], // first x value
-        ligne_brisee->points[1] // first y value
-      );
-
-      poly = true;
+      is_poly = true;
     }
-
-    // display_ligne_brisee(ligne_brisee->points, ligne_brisee->nb_valeurs);
-    // printf("FIN******************\n");
 
     break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
@@ -164,12 +155,22 @@ int main(int argc, char **argv)
 			img = I_new(largeur,hauteur);
 
       // initialisation de la ligne brisée et de ses points d'origine s'il y en a
-      ligne_brisee = malloc(sizeof(struct struct_line));
-      ligne_brisee->nb_valeurs = 0;
-      add_point_to_line(ligne_brisee, 5, 42);
-      add_point_to_line(ligne_brisee, 10, 84);
-      add_point_to_line(ligne_brisee, 74, 18);
-      add_point_to_line(ligne_brisee, 84, 48);
+
+      polygone = malloc(sizeof(struct struct_polygone));
+      if(polygone == NULL) {
+        exit(EXIT_FAILURE);
+      }
+
+      polygone->nb = 0;
+      polygone->first = NULL;
+      polygone->last = NULL;
+
+      // ligne_brisee = malloc(sizeof(struct struct_line));
+      // ligne_brisee->nb_valeurs = 0;
+      // add_point_to_line(ligne_brisee, 5, 42);
+      // add_point_to_line(ligne_brisee, 10, 84);
+      // add_point_to_line(ligne_brisee, 74, 18);
+      // add_point_to_line(ligne_brisee, 84, 48);
 		}
 		int windowPosX = 100, windowPosY = 100;
 

@@ -133,58 +133,56 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
  * Tableau contenant des paires de coordonnées (x, y)
  * Taille du tableau
  */
-void I_ligne_brisee(Image *img, int tableau[], int taille) {
-  for(int i=0; i<taille-2; i+=2) {
-    I_bresenham(
-      img,
-      tableau[i], tableau[i+1],
-      tableau[i+2], tableau[i+3]
-    );
+void I_ligne_brisee(Image *img, poly *polygone) {
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      node *current_node = polygone->first;
+      int i = 1;
+
+      while(current_node->next != NULL) {
+        printf("%d, %d\n",i, current_node->p.x);
+        I_bresenham(
+          img,
+          current_node->p.x,
+          current_node->p.y,
+          current_node->next->p.x,
+          current_node->next->p.y
+        );
+        i++;
+        current_node = current_node->next;
+      }
+    }
   }
 }
 
-/**
- * Affiche un tableau de coordonnées
- * Params:
- * Tableau contenant des paires de coordonnées
- * Taille du tableau
- */
-void display_ligne_brisee(int tableau[], int taille) {
-  printf("LIGNE_BRISEE___________________________\n");
-
-  for(int i=0; i<taille; i+=2) {
-      printf("[X = %d Y = %d]", tableau[i], tableau[i+1]);
-  }
-  printf("\n");
-}
 
 /**
- * Ajout un point à un objet de la structure "Line"
- * Params:
- * line l'adresse de la ligne à modifier
- * x la coordonnée en x du nouveau point
- * y la coordonnée en y du nouveau point
+ * Création d'un nouveau point dans une structure polygone
  */
-void add_point_to_line(line *l, int x, int y) {
+ void insert(poly *polygone, int x, int y)
+ {
+   node *new_node = malloc(sizeof(struct struct_node));
+   if(new_node == NULL) {
+     exit(EXIT_FAILURE);
+   }
 
-  l->points[l->nb_valeurs] = x;
-  l->points[l->nb_valeurs +1] = y;
-	l->nb_valeurs +=2;
-  // printf("Ajout de 2 valeurs\n");
-  // printf("Valeurs ajoutées : %d, %d \n", l->points[l->nb_valeurs-2], l->points[l->nb_valeurs-1]);
+   point new_point = {x, y};
 
-}
+   new_node->p = new_point;
 
+   //on met le point à la suite du polygone
+   new_node->next = NULL;
 
-/**
- * Enlève le dernier point d'un objet de la structure "Line"
- * Params:
- * line l'adresse de la ligne à modifier
- */
-void remove_point_from_line(line *l) {
-	l->points[l->nb_valeurs -1] = 0;
-	l->points[l->nb_valeurs -2] = 0;
+   // on ajoute new_node à la liste chaînée
+   if(polygone->nb == 0) {
+     polygone->first = new_node;
+     polygone->last = new_node;
 
-	l->nb_valeurs -=2;
-  // printf("Remove 2 valeurs\n");
-}
+   } else {
+     polygone->last->next = new_node;
+     polygone->last = new_node;
+   }
+
+   polygone->nb++;
+ }
