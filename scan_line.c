@@ -154,6 +154,7 @@ void scan_line(Image *img, poly *polygone) {
     }
   }
 
+  display(liste_inter);
   //parcourt des intersections pour tracer les lignes de remplissage
   if(liste_inter != NULL) {
     if(liste_inter->first != NULL) {

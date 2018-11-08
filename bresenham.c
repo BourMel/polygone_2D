@@ -224,7 +224,7 @@ void insert_order(poly *polygone, int x, int y) {
       // display(polygone);
     }
     else if(polygone->nb == 1) {
-      if(x >= polygone->first->p.x) {
+      if(y >= polygone->first->p.y) {
         polygone->first->next = new_node;
         polygone->last = new_node;
         // printf("Insert x:%d, y:%d\n",x,y);
@@ -242,14 +242,14 @@ void insert_order(poly *polygone, int x, int y) {
         node *current_node = polygone->first;
 
         while(current_node->next != NULL) {
-          if(x >= current_node->p.x
-          && x <= current_node->next->p.x) {
+          if(y >= current_node->p.y
+          && y <= current_node->next->p.y) {
             new_node->next = current_node->next;
             current_node->next = new_node;
             // printf("Insert x:%d, y:%d\n",x,y);
             // display(polygone);
             break;
-          } else if(x <= current_node->p.x) {
+          } else if(y <= current_node->p.y) {
             new_node->next = polygone->first;
             polygone->first = new_node;
             // printf("Insert x:%d, y:%d\n",x,y);

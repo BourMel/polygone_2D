@@ -34,6 +34,8 @@ void I_ligne_brisee(Image *img, poly *polygone);
 void insert(poly *polygone, int x, int y);
 void insert_order(poly *polygone, int x, int y);
 
+void display(poly *polygone);
+
 // void display_ligne_brisee(int tableau[], int taille);
 
 // ajout à un point d'une structure "line"
