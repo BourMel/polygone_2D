@@ -141,7 +141,6 @@ void I_ligne_brisee(Image *img, poly *polygone) {
       int i = 1;
 
       while(current_node->next != NULL) {
-        printf("%d, %d\n",i, current_node->p.x);
         I_bresenham(
           img,
           current_node->p.x,

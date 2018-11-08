@@ -43,6 +43,15 @@ void display_CB()
 
     I_ligne_brisee(img, polygone);
 
+    if(is_poly)
+    {
+        I_bresenham(img,
+          polygone->last->p.x,
+          polygone->last->p.y,
+          polygone->first->p.x,
+          polygone->first->p.y);
+    }
+
     I_draw(img);
     glutSwapBuffers();
 }
@@ -85,17 +94,9 @@ void keyboard_CB(unsigned char key, int x, int y)
     break;
   case 'c' :
 
-    if(is_poly) {
-      // remove_point_from_line(ligne_brisee);
+    if(is_poly) { //fermé
       is_poly = false;
-    } else {
-
-      // add_point_to_line(
-      //   ligne_brisee,
-      //   ligne_brisee->points[0], // first x value
-      //   ligne_brisee->points[1] // first y value
-      // );
-
+    } else { //ouvert
       is_poly = true;
     }
 
