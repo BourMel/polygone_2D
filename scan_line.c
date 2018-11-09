@@ -2,54 +2,111 @@
 #include "bresenham.h"
 #include "polygone.h"
 #include "scan_line.h"
-//
-// int getXmin(line *l) {
-//   int min = l->points[0];
-//
-//   for(int i=2; i<l->nb_valeurs; i+=2) {
-//     if(l->points[i] < min) {
-//       min = l->points[i];
-//     }
-//   }
-//
-//   return min;
-// }
-//
-// int getYmin(line *l) {
-//   int min = l->points[1];
-//
-//   for(int i=3; i<l->nb_valeurs-1; i+=2) {
-//     if(l->points[i] < min) {
-//       min = l->points[i];
-//     }
-//   }
-//
-//   return min;
-// }
-//
-// int getXmax(line *l) {
-//   int max = l->points[0];
-//
-//   for(int i=2; i<l->nb_valeurs; i+=2) {
-//     if(l->points[i] > max) {
-//       max = l->points[i];
-//     }
-//   }
-//
-//   return max;
-// }
-//
-// int getYmax(line *l) {
-//   int max = l->points[1];
-//
-//   for(int i=3; i<l->nb_valeurs-1; i+=2) {
-//     if(l->points[i] > max) {
-//       max = l->points[i];
-//     }
-//   }
-//
-//   return max;
-// }
+
+int getXmin(poly *polygone) {
+  int min;
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      min = polygone->first->p.x;
+      node *current_node = polygone->first;
+
+      // parcours des segments du polygone
+      while(current_node->next != NULL) {
+        if(current_node->p.x < min) {
+            min = current_node->p.x;
+        }
+        current_node = current_node->next;
+      }
+
+      // comparaison du dernier point
+      if(polygone->last->p.x < min) {
+        min = polygone->last->p.x;
+      }
+    }
+  }
+
+  return min;
+}
+
+int getYmin(poly *polygone) {
+  int min;
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      min = polygone->first->p.y;
+      node *current_node = polygone->first;
+
+      // parcours des segments du polygone
+      while(current_node->next != NULL) {
+        if(current_node->p.y < min) {
+            min = current_node->p.y;
+        }
+        current_node = current_node->next;
+      }
+
+      // comparaison du dernier point
+      if(polygone->last->p.y < min) {
+        min = polygone->last->p.y;
+      }
+    }
+  }
+
+  return min;
+}
+
+
+int getXmax(poly *polygone) {
+  int max;
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      max = polygone->first->p.x;
+      node *current_node = polygone->first;
+
+      // parcours des segments du polygone
+      while(current_node->next != NULL) {
+        if(current_node->p.x > max) {
+            max = current_node->p.x;
+        }
+        current_node = current_node->next;
+      }
+
+      // comparaison du dernier point
+      if(polygone->last->p.x > max) {
+        max = polygone->last->p.x;
+      }
+    }
+  }
+
+  return max;
+}
+
+int getYmax(poly *polygone) {
+  int max;
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      max = polygone->first->p.y;
+      node *current_node = polygone->first;
+
+      // parcours des segments du polygone
+      while(current_node->next != NULL) {
+        if(current_node->p.y > max) {
+            max = current_node->p.y;
+        }
+        current_node = current_node->next;
+      }
+
+      // comparaison du dernier point
+      if(polygone->last->p.y > max) {
+        max = polygone->last->p.y;
+      }
+    }
+  }
+
+  return max;
+}
 
 /**
  * Détecte une intersection, et stocke ses coordonnées dans les derniers paramètres
@@ -106,18 +163,18 @@ void scan_line(Image *img, poly *polygone) {
   int *inter_x = malloc(sizeof(int));
   int *inter_y = malloc(sizeof(int));
 
-  // à corriger avec les valeurs de la boîte englobante
-  int Xmin = 0;
-  int Ymin = 0;
-  int Xmax = 399;
-  int Ymax = 399;
-  
-  // segment de la largeur de la fenêtree
+  // boîte englobante
+  int Xmin = getXmin(polygone);
+  int Ymin = getYmin(polygone);
+  int Xmax = getXmax(polygone);
+  int Ymax = getYmax(polygone);
+
+  // segment de la largeur de la boîte
   int xA = Xmin;
   int xB = Xmax;
   int yA, yB, has_intersection;
 
-  // parcours de la fenêtre en hauteur
+  // parcours de la boîte en hauteur
   for(int i=Ymin; i<Ymax; i++) {
     // AB descend (ligne de scan)
     yA = i;
