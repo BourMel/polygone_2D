@@ -19,10 +19,10 @@
 
 #include "Image.h"
 #include "bresenham.h"
+#include "polygone.h"
 #include "scan_line.h"
 
 Image *img;
-// line *ligne_brisee;
 poly *polygone;
 bool is_poly = false;
 bool filled = false;
@@ -42,22 +42,20 @@ void display_CB()
     Color n = {0,0,0};
     I_fill(img, n);
 
-    I_ligne_brisee(img, polygone);
+    // trace le polygone
+    I_polygone(img, polygone);
 
-    // int *inter_x = NULL;
-    // int *inter_y = NULL;
-    // int inter = get_line_intersection(5, 5, 10, 5, 2, 0, 2, 40, inter_x, inter_y);
-
-    if(is_poly)
-    {
-        I_bresenham(img,
-          polygone->last->p.x,
-          polygone->last->p.y,
-          polygone->first->p.x,
-          polygone->first->p.y);
+    // fermeture du polygone
+    if(is_poly) {
+      I_bresenham(
+        img,
+        polygone->last->p.x, polygone->last->p.y,
+        polygone->first->p.x, polygone->first->p.y
+      );
     }
-    if(filled)
-    {
+
+    // remplissage du polygone
+    if(filled) {
       scan_line(img, polygone);
     }
 
@@ -93,22 +91,8 @@ void keyboard_CB(unsigned char key, int x, int y)
 	case 'z' : I_zoom(img,2.0); break;
 	case 'Z' : I_zoom(img,0.5); break;
 	case 'i' : I_zoomInit(img); break;
-  case 'f' :
-    printf("Poly\n");
-    //calcul boite englobante @TODO
-
-    filled = !filled;
-
-    break;
-  case 'c' :
-
-    if(is_poly) { //fermé
-      is_poly = false;
-    } else { //ouvert
-      is_poly = true;
-    }
-
-    break;
+  case 'f' : filled = !filled; break;
+  case 'c' : is_poly = !is_poly; break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
 	}
 
@@ -163,24 +147,10 @@ int main(int argc, char **argv)
 			hauteur = atoi(argv[2]);
 			img = I_new(largeur,hauteur);
 
-      // initialisation de la ligne brisée et de ses points d'origine s'il y en a
-
-      polygone = malloc(sizeof(struct struct_polygone));
-      if(polygone == NULL) {
-        exit(EXIT_FAILURE);
-      }
-
-      polygone->nb = 0;
-      polygone->first = NULL;
-      polygone->last = NULL;
-
-      // ligne_brisee = malloc(sizeof(struct struct_line));
-      // ligne_brisee->nb_valeurs = 0;
-      // add_point_to_line(ligne_brisee, 5, 42);
-      // add_point_to_line(ligne_brisee, 10, 84);
-      // add_point_to_line(ligne_brisee, 74, 18);
-      // add_point_to_line(ligne_brisee, 84, 48);
+      // initialisation du polygone et de ses points d'origine s'il y en a
+      polygone = create_polygone();
 		}
+
 		int windowPosX = 100, windowPosY = 100;
 
 		glutInitWindowSize(largeur,hauteur);
