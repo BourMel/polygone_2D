@@ -195,7 +195,64 @@ void add_point_middle_edge(Image *img, poly *polygone, int position) {
  * Position y
  */
 int closestVertex(Image *img, poly *polygone, int x, int y) {
+  int distance_min;
+  int position;
+  int distance;
+  int i;
 
+  float x_middle, y_middle;
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      i = 0;
+      node *current_node = polygone->first;
+
+      // parcours des points du polygone
+      while(current_node->next != NULL) {
+        // calcule le milieu de l'arête
+        x_middle = (current_node->p.x + current_node->next->p.x) / 2;
+        y_middle = (current_node->p.y + current_node->next->p.y) / 2;
+
+        // distance entre le milieu de l'arête et les coordonnées passées en paramètre
+        distance = sqrt(
+          pow(x - x_middle, 2)
+          + pow(y - y_middle, 2)
+        );
+
+        if((i == 0) || (distance < distance_min)) {
+          distance_min = distance;
+          position = i;
+        }
+
+        current_node = current_node->next;
+        i++;
+      }
+
+      // comparaison avec le dernier point
+      distance = sqrt(
+        pow(x - current_node->p.x, 2)
+        + pow(y - current_node->p.y, 2)
+      );
+
+      if(distance < distance_min) {
+        distance_min = distance;
+        position = i;
+      }
+    }
+  }
+
+  return position;
+}
+
+/**
+ * Retourne l'indice de l'arête la plus proche de (x, y)
+ * Params:
+ * Image dans laquelle dessiner
+ * Polygone contenant le sommet
+ * Position x
+ * Position y
+ */
+int closestEdge(Image *img, poly *polygone, int x, int y) {
   int distance_min;
   int position;
   int distance;

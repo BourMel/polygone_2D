@@ -86,8 +86,12 @@ void mouse_CB(int button, int state, int x, int y)
 	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN)) {
     if(mode == 'i') {
       insert(polygone, x, y);
-    } else if (mode == 'v') {
+
+    } else if(mode == 'v') {
       focused_point = closestVertex(img, polygone, x, y);
+
+    } else if(mode == 'e') {
+      focused_edge = closestEdge(img, polygone, x, y);
     }
 
   } else if((button == GLUT_MIDDLE_BUTTON) && (state == GLUT_DOWN)) {

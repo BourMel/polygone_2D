@@ -14,5 +14,6 @@ void select_edge(Image *img, poly *polygone, int position);
 void add_point_middle_edge(Image *img, poly *polygone, int position);
 
 int closestVertex(Image *img, poly *polygone, int x, int y);
+int closestEdge(Image *img, poly *polygone, int x, int y);
 
 #endif
