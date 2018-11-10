@@ -30,6 +30,7 @@ bool is_poly = false;
 bool filled = false;
 char mode = 'i'; // insert, vertex, edge
 int focused_point = 0;
+int focused_edge = 0;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -49,9 +50,11 @@ void display_CB()
     // trace le polygone
     I_polygone(img, polygone);
 
+    // met en valeur la sélection
     if(mode == 'v') {
-      // met en valeur le point sélectionné
       select_point(img, polygone, focused_point);
+    } else if (mode == 'e') {
+      select_edge(img, polygone, focused_edge);
     }
 
     // fermeture du polygone
@@ -83,6 +86,13 @@ void mouse_CB(int button, int state, int x, int y)
 	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN)) {
     if(mode == 'i') {
       insert(polygone, x, y);
+    } else if (mode == 'v') {
+      focused_point = closestVertex(img, polygone, x, y);
+    }
+
+  } else if((button == GLUT_MIDDLE_BUTTON) && (state == GLUT_DOWN)) {
+    if(mode == 'e') {
+      add_point_middle_edge(img, polygone, focused_edge);
     }
   }
 
@@ -109,6 +119,10 @@ void keyboard_CB(unsigned char key, int x, int y)
   // polygone
   case 'f' : filled = !filled; break;
   case 'c' : is_poly = !is_poly; break;
+  // suppr
+  case 127:
+    delete_point(img, polygone, focused_point);
+    break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
 	}
 
@@ -125,6 +139,23 @@ void special_CB(int key, int x, int y)
 {
 	switch(key)
 	{
+  // gauche
+  case 100:
+    move_point(img, polygone, focused_point, 'g');
+    break;
+  // haut
+  case 101:
+    move_point(img, polygone, focused_point, 'h');
+    break;
+  // droite
+  case 102:
+    move_point(img, polygone, focused_point, 'd');
+    break;
+  //bas
+  case 103:
+    move_point(img, polygone, focused_point, 'b');
+    break;
+
   // page suivante
   case 105:
     if(mode == 'v') {
@@ -133,12 +164,21 @@ void special_CB(int key, int x, int y)
       } else {
         focused_point -=1;
       }
+
+    } else if(mode == 'e') {
+      if(focused_edge == 0) {
+        focused_edge += polygone->nb-2;
+      } else {
+        focused_edge -=1;
+      }
     }
     break;
   // page précédente
   case 104:
     if(mode == 'v') {
       focused_point = (focused_point+1)%polygone->nb;
+    } else if (mode == 'e') {
+      focused_edge = (focused_edge+1)%polygone->nb;
     }
     break;
 
