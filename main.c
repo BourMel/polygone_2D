@@ -16,16 +16,20 @@
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "Image.h"
 #include "bresenham.h"
 #include "polygone.h"
 #include "scan_line.h"
+#include "selection.h"
 
 Image *img;
 poly *polygone;
 bool is_poly = false;
 bool filled = false;
+char mode = 'i'; // insert, vertex, edge
+int focused_point = 0;
 
 //------------------------------------------------------------------
 //	C'est le display callback. A chaque fois qu'il faut
@@ -44,6 +48,11 @@ void display_CB()
 
     // trace le polygone
     I_polygone(img, polygone);
+
+    if(mode == 'v') {
+      // met en valeur le point sélectionné
+      select_point(img, polygone, focused_point);
+    }
 
     // fermeture du polygone
     if(is_poly) {
@@ -72,7 +81,9 @@ void display_CB()
 void mouse_CB(int button, int state, int x, int y)
 {
 	if((button==GLUT_LEFT_BUTTON)&&(state==GLUT_DOWN)) {
-    insert(polygone, x, y);
+    if(mode == 'i') {
+      insert(polygone, x, y);
+    }
   }
 
 	glutPostRedisplay();
@@ -88,9 +99,14 @@ void keyboard_CB(unsigned char key, int x, int y)
 	switch(key)
 	{
 	case 27 : exit(1); break;
+  // zoom
 	case 'z' : I_zoom(img,2.0); break;
 	case 'Z' : I_zoom(img,0.5); break;
-	case 'i' : I_zoomInit(img); break;
+  // modes insert, vertex, edge
+	case 'i' : mode = 'i'; focused_point = 0; break;
+	case 'v' : mode = 'v'; break;
+	case 'e' : mode = 'e'; break;
+  // polygone
   case 'f' : filled = !filled; break;
   case 'c' : is_poly = !is_poly; break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
@@ -107,16 +123,29 @@ void keyboard_CB(unsigned char key, int x, int y)
 
 void special_CB(int key, int x, int y)
 {
-	// int mod = glutGetModifiers();
-
-	int d = 10;
-
 	switch(key)
 	{
-	case GLUT_KEY_UP    : I_move(img,0,d); break;
-	case GLUT_KEY_DOWN  : I_move(img,0,-d); break;
-	case GLUT_KEY_LEFT  : I_move(img,d,0); break;
-	case GLUT_KEY_RIGHT : I_move(img,-d,0); break;
+  // page suivante
+  case 105:
+    if(mode == 'v') {
+      if(focused_point == 0) {
+        focused_point += polygone->nb-1;
+      } else {
+        focused_point -=1;
+      }
+    }
+    break;
+  // page précédente
+  case 104:
+    if(mode == 'v') {
+      focused_point = (focused_point+1)%polygone->nb;
+    }
+    break;
+
+	// case GLUT_KEY_UP    : I_move(img,0,d); break;
+	// case GLUT_KEY_DOWN  : I_move(img,0,-d); break;
+	// case GLUT_KEY_LEFT  : I_move(img,d,0); break;
+	// case GLUT_KEY_RIGHT : I_move(img,-d,0); break;
 	default : fprintf(stderr,"special_CB : %d : unknown key.\n",key);
 	}
 	glutPostRedisplay();
