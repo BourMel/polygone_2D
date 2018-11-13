@@ -16,8 +16,8 @@ typedef struct struct_polygone {
     node *last;
 } poly;
 
-// allocation d'un polygone
 poly* create_polygone();
+void empty_polygone(poly *polygone);
 
 // tracé du polygone
 void I_polygone(Image *img, poly *polygone);

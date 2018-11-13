@@ -222,8 +222,9 @@ void scan_line(Image *img, poly *polygone) {
         }
       }
     }
-  }
 
-  //parcours de la liste des intersections pour tracer les lignes de remplissage
-  I_polygone(img, liste_inter);
+    // lorsque une ligne a été analysée, on dessine (remplissage)
+    I_polygone(img, liste_inter);
+    empty_polygone(liste_inter);
+  }
 }

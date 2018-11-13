@@ -20,6 +20,28 @@ poly* create_polygone() {
 }
 
 /**
+ * Supprime l'ensemble des noeuds d'un polygone
+ * Params : polygone à supprimer
+ */
+ void empty_polygone(poly *polygone) {
+   if(polygone != NULL) {
+       node *current_node = polygone->first;
+       node *tmp;
+
+     // parcourt des différents points
+     while(current_node->next != NULL) {
+       tmp = current_node;
+       free(current_node);
+       current_node = tmp->next;
+     }
+   }
+
+   polygone->nb = 0;
+   polygone->first = NULL;
+   polygone->last = NULL;
+ }
+
+/**
  * A partir d'un tableau de coordonnées, trace un polygone
  * un ensemble de points
  * Params:
@@ -109,7 +131,7 @@ void display(poly *polygone) {
 }
 
 /**
-  * Insertion d'un point en respectant l'ordre des y
+  * Insertion d'un point en respectant l'ordre des x
   * dans une structure de type polygone
   * Params :
   * Polygone
@@ -137,14 +159,14 @@ void insert_order(poly *polygone, int x, int y) {
     // si le polygone ne contient qu'un seul noeud
     } else if(polygone->nb == 1) {
 
-      // si y est supérieur à la valeur existante
-      if(y >= polygone->first->p.y) {
+      // si x est supérieur à la valeur existante
+      if(x >= polygone->first->p.x) {
         // y est inséré à la fin
         polygone->first->next = new_node;
         polygone->last = new_node;
 
       } else {
-        // y est inséré au début
+        // x est inséré au début
         new_node->next = polygone->first;
         polygone->first = new_node;
       }
@@ -158,25 +180,25 @@ void insert_order(poly *polygone, int x, int y) {
         // parcours du polygone
         while(current_node->next != NULL) {
 
-          // insertion de y entre la valeur précédente et la valeur suivante
-          if((y >= current_node->p.y) && (y <= current_node->next->p.y)) {
+          // insertion de x entre la valeur précédente et la valeur suivante
+          if((x >= current_node->p.x) && (x <= current_node->next->p.x)) {
             new_node->next = current_node->next;
             current_node->next = new_node;
             break;
 
           // insertion de y au début du polygone (seul cas où y < current_node)
-          } else if(y <= current_node->p.y) {
+          } else if(x <= current_node->p.x) {
             new_node->next = polygone->first;
             polygone->first = new_node;
             break;
 
-          // insertion de y à la fin du polygone
+          // insertion de x à la fin du polygone
           } else if(current_node->next->next == NULL) {
             current_node->next->next = new_node;
             polygone->last = new_node;
             break;
 
-          // si y n'est pas inséré, on continue le parcours
+          // si x n'est pas inséré, on continue le parcours
           } else {
             current_node = current_node->next;
           }
