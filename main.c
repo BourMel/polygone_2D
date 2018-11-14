@@ -50,13 +50,6 @@ void display_CB()
     // trace le polygone
     I_polygone(img, polygone);
 
-    // met en valeur la sélection
-    if(mode == 'v') {
-      select_point(img, polygone, focused_point);
-    } else if (mode == 'e') {
-      select_edge(img, polygone, focused_edge);
-    }
-
     // fermeture du polygone
     if(is_poly) {
       I_bresenham(
@@ -69,6 +62,13 @@ void display_CB()
     // remplissage du polygone
     if(filled) {
       scan_line(img, polygone);
+    }
+
+    // met en valeur la sélection, en dernier pour être toujours visible
+    if(mode == 'v') {
+      select_point(img, polygone, focused_point);
+    } else if (mode == 'e') {
+      select_edge(img, polygone, focused_edge, is_poly);
     }
 
     I_draw(img);
@@ -160,8 +160,8 @@ void special_CB(int key, int x, int y)
     move_point(img, polygone, focused_point, 'b');
     break;
 
-  // page suivante
-  case 105:
+  // parcourir le polygone à reculons
+  case GLUT_KEY_PAGE_DOWN:
     if(mode == 'v') {
       if(focused_point == 0) {
         focused_point += polygone->nb-1;
@@ -171,18 +171,35 @@ void special_CB(int key, int x, int y)
 
     } else if(mode == 'e') {
       if(focused_edge == 0) {
-        focused_edge += polygone->nb-2;
+
+        // @TODO
+        // ramène la sélection à la bonne arête que la ligne soit ouverte ou fermée
+        if(is_poly) {
+
+        }
+
+        focused_edge += polygone->nb-1;
       } else {
         focused_edge -=1;
       }
     }
     break;
-  // page précédente
-  case 104:
+  // parcourir le polygone
+  case GLUT_KEY_PAGE_UP:
     if(mode == 'v') {
       focused_point = (focused_point+1)%polygone->nb;
+
     } else if (mode == 'e') {
-      focused_edge = (focused_edge+1)%polygone->nb;
+
+      // ramène la sélection à l'arête 0 :
+      if((is_poly && (focused_edge == polygone->nb-1)) // polygone
+      || (!is_poly && (focused_edge == polygone->nb-2))) // arête fermante
+      {
+        focused_edge = 0;
+
+      } else {
+        focused_edge += 1;
+      }
     }
     break;
 

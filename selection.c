@@ -129,10 +129,43 @@ void delete_point(Image *img, poly *polygone, int position) {
  * Image dans laquelle dessiner
  * Polygone à parcourir
  * Position de l'arête à sélectionner
+ * Indiquer s'il s'agit d'un polygone ou d'une ligne brisée
  */
-void select_edge(Image *img, poly *polygone, int position) {
-  select_point(img, polygone, position);
-  select_point(img, polygone, (position+1)%polygone->nb);
+void select_edge(Image *img, poly *polygone, int position, bool is_poly) {
+  Color c = C_new(0, 255, 255);
+
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      // cas de l'arête fermante
+      if((position == polygone->nb-1) && is_poly) {
+        I_bresenham_color(
+          img, c,
+          polygone->last->p.x, polygone->last->p.y,
+          polygone->first->p.x, polygone->first->p.y
+        );
+
+      // tous les autres cas
+      } else {
+
+        int i = 0;
+        node *current_node = polygone->first;
+
+        // parcours des points du polygone
+        while((i != position) && (current_node->next != NULL)) {
+          current_node = current_node->next;
+          i++;
+        }
+
+        // mise en valeur grâce à une couleur
+        I_bresenham_color(
+          img, c,
+          current_node->p.x, current_node->p.y,
+          current_node->next->p.x, current_node->next->p.y
+        );
+
+      }
+    }
+  }
 }
 
 /**

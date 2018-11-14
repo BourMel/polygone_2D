@@ -109,7 +109,7 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
   int y = yA_1o;
   int d = 2*dy-dx;
 
-  while(x < xB_1o) {
+  while(x <= xB_1o) {
     // avant l'affichage, on quitte le premier octant
     octant1_to_Z2(xA, yA, xB, yB, x, y, &x_Z2, &y_Z2);
     I_plotColor(img, x_Z2, y_Z2, c);
@@ -124,3 +124,43 @@ void I_bresenham(Image *img, int xA, int yA, int xB, int yB) {
     }
   }
 }
+
+/**
+ * Dessine une droite de Bresenham en laissant l'utilisateur choisir la couleur
+ * Params:
+ * img l'image dans laquelle dessiner
+ * couleur (de type Color)
+ * xA & yA les coordonnées du premier point A de la droite
+ * xB & yB les coordonnées du deuxième point B de la droite
+ */
+ void I_bresenham_color(Image *img, Color c, int xA, int yA, int xB, int yB) {
+   int xA_1o, yA_1o, xB_1o, yB_1o, x_Z2, y_Z2;
+
+   // on se ramène d'abord dans le premier octant
+   Z2_to_octant1(xA, yA, xB, yB, &xA_1o, &yA_1o, &xB_1o, &yB_1o);
+
+   // et on utilise les nouvelles coordonnées de A et B pour faire les calculs
+   int dx = xB_1o - xA_1o;
+   int dy = yB_1o - yA_1o;
+   int incrd1 = 2*dy;
+   int incrd2 = 2*(dy-dx);
+
+   int x = xA_1o;
+   int y = yA_1o;
+   int d = 2*dy-dx;
+
+   while(x <= xB_1o) {
+     // avant l'affichage, on quitte le premier octant
+     octant1_to_Z2(xA, yA, xB, yB, x, y, &x_Z2, &y_Z2);
+     I_plotColor(img, x_Z2, y_Z2, c);
+
+     x++;
+
+     if(d<0) {
+       d += incrd1;
+     } else {
+       y++;
+       d += incrd2;
+     }
+   }
+ }
