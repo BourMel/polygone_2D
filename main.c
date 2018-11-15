@@ -171,17 +171,17 @@ void special_CB(int key, int x, int y)
 
     } else if(mode == 'e') {
       if(focused_edge == 0) {
-
-        // @TODO
-        // ramène la sélection à la bonne arête que la ligne soit ouverte ou fermée
+        // ramène la sélection à la dernière arête que la ligne soit ouverte ou fermée
         if(is_poly) {
-
+          focused_edge = polygone->nb-1;
+        } else {
+          focused_edge = polygone->nb-2;
         }
 
-        focused_edge += polygone->nb-1;
       } else {
         focused_edge -=1;
       }
+
     }
     break;
   // parcourir le polygone
