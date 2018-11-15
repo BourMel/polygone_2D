@@ -42,4 +42,30 @@ Il est également possible de sélectionner une arête en cliquant à proximité
 
 Un clic sur le bouton du milieu (molette) de la souris permet de découper une arête en deux, en y insérant un nouveau point.
 
-## Exemple d'utilisation
+## Exemple d'utilisation et instructions
+
+![Exemple d'utilisation](./demo.gif)
+
+Pour réaliser les mêmes actions que dans le GIF, suivez les instructions suivantes :
+
+
+* Lancez le programme avec `make && ./plot 400 400`
+
+#### Création du polygone
+
+* Clic gauche pour créer les sommets de la figure
+* Touche `c` pour le fermer
+* Touche `f` pour le remplir, puis pour le vider
+
+#### Insertion d'un point au milieu d'une arête
+
+* Touche `e` pour passer en mode `edge`
+* Sélection de l'arête souhaitée avec les touches `page suivante` et `page précédente` (aussi possible avec un clic)
+* Insertion d'un point avec le clic milieu de la souris
+
+#### Manipulation et suppression des points
+
+* Touche `v` pour passer en mode vertex
+* Sélection du point souhaité avec les touches `page suivante` et `page précédente` (aussi possible avec un clic)
+* Déplacement avec les touches directionnelles
+* Suppression des points avec la touche `suppr`
