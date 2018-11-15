@@ -1,59 +1,30 @@
 # polygone_2D
-Saisie et remplissage d'un polygone 2D - Projet dans le cadre de l'UE "Fondements et Algorithmes de l'Imagerie Numérique"
 
-# Installation des dépendances
+Ce programme permet à un utilisateur de tracer, remplir un polygone et le manipuler. Ce projet a été réalisé dans le cadre de l'UE "Fondements et Algorithmes de l'Imagerie Numérique".
+
+## Installation des dépendances
 
      sudo apt-get install freeglut3-dev
 
+## Lancement du programme
 
-# ReadMe du Kit2D
+Après avoir compilé le programme avec la commande `make`, lancez-le avec `./plot [largeur] [hauteur]` (par exemple `./plot 400 400`).
 
-Arash HABIBI
+## Utilisation du programme
 
-Le programme plot permet de créer une image vierge et
-d'y colorier les pixels ou, éventuellement, de partir
-d'une image préexistant et de la modifier pixel par pixel.
+Le programme fonctionne selon trois modes d'utilisation :
 
-Pour compiler le programme :
+### Mode insertion
 
-     make
+Ce mode s'active avec la touche `i`.
+Pour ajouter un point
 
-Pour travailler sur une image 800 x 600 vierge (noire) :
+### Mode vertex
 
-     plot 800 600
+Ce mode s'active avec la touche `v`.
 
-Pour travailler sur une image préexistant dans un fichier au format ppm :
+### Mode edge
 
-     plot image2.ppm
+Ce mode s'active avec la touche `e`.
 
-
-Ce programme permet également d'examiner l'image en zoomant sur
-un détail en particulier. Pour cela, cliquer sur le détail en
-question et presser la touche 'z' (comme zoom) autant de fois que
-nécessaire. Pour s'éloigner, presser la touche 'Z' et pour revenir
-à l'état initial, presser 'i'.
-
-Par ailleurs, les fonctions qui sont à votre disposition pour modifier
-les images, sont dans le fichier Image.h. En particulier :
-
-// Pour créer une image vierge
-Image* I_new(int _width, int _height);
-
-// Pour créer une image à partir d'un fichier ppm existant :
-Image* I_read(char *ppmfilename);
-
-// Pour remplir l'image avec la couleur c
-void I_fill       (Image *img, Color c);
-
-// Pour remplir l'image avec un damier dont les cases font step pixels
-// et sont de couleurs c1 et c2 :
-void I_checker    (Image *img, Color c1, Color c2, int step);
-
-// Change la couleur courante
-void I_changeColor(Image *img, Color c);
-
-// Colorie le pixel x,y avec la couleur courante
-void I_plot       (Image *img, int x, int y);
-
-// Colorie le pixel x,y avec la couleur c sans changer la couleur courante
-void I_plotColor  (Image *img, int x, int y, Color c);
+## Exemple d'utilisation
