@@ -93,28 +93,42 @@ void move_point(Image *img, poly  *polygone, int position, char direction) {
  */
 void delete_point(Image *img, poly *polygone, int position) {
   if(polygone != NULL) {
-    if(polygone->first != NULL) {
+    // on ignore le cas où le polygone est vide
+    if((polygone->first != NULL) && (polygone->nb != 0)) {
       int i = 0;
       node *current_node = polygone->first;
 
-      // premier point
-      if(position == 0) {
-        polygone->first = current_node->next;
+      // s'il ne reste qu'un point dans le polygone
+      if(polygone->nb == 1) {
+        // on vide le polygone
+        polygone->first = NULL;
+        polygone->last = NULL;
         free(current_node);
 
       } else {
-        // parcours des points du polygone
-        while((i != position-1) && (current_node->next != NULL)) {
-          i++;
-          current_node = current_node->next;
-        }
 
-        if(position != polygone->nb) {
-          current_node->next = current_node->next->next;
+        // premier point
+        if(position == 0) {
+          polygone->first = current_node->next;
+          free(current_node);
+
         } else {
+          // parcours des points du polygone (on s'arrête au précédent pour pouvoir
+          // corriger sa valeur "next")
+          while((i != position-1) && (current_node->next != NULL)) {
+            i++;
+            current_node = current_node->next;
+          }
+
           // dernier point
-          current_node->next = NULL;
-          polygone->last = current_node;
+          if(position == polygone->nb-1) {
+            current_node->next = NULL;
+            polygone->last = current_node;
+
+          // point quelconque
+          } else {
+            current_node->next = current_node->next->next;
+          }
         }
       }
 

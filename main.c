@@ -47,28 +47,30 @@ void display_CB()
     Color n = {0,0,0};
     I_fill(img, n);
 
-    // trace le polygone
-    I_polygone(img, polygone);
+    if(polygone->nb != 0) {
+      // trace le polygone
+      I_polygone(img, polygone);
 
-    // fermeture du polygone
-    if(is_poly) {
-      I_bresenham(
-        img,
-        polygone->last->p.x, polygone->last->p.y,
-        polygone->first->p.x, polygone->first->p.y
-      );
-    }
+      // fermeture du polygone
+      if(is_poly) {
+        I_bresenham(
+          img,
+          polygone->last->p.x, polygone->last->p.y,
+          polygone->first->p.x, polygone->first->p.y
+        );
+      }
 
-    // remplissage du polygone
-    if(filled) {
-      scan_line(img, polygone);
-    }
+      // remplissage du polygone
+      if(filled) {
+        scan_line(img, polygone);
+      }
 
-    // met en valeur la sélection, en dernier pour être toujours visible
-    if(mode == 'v') {
-      select_point(img, polygone, focused_point);
-    } else if (mode == 'e') {
-      select_edge(img, polygone, focused_edge, is_poly);
+      // met en valeur la sélection, en dernier pour être toujours visible
+      if(mode == 'v') {
+        select_point(img, polygone, focused_point);
+      } else if (mode == 'e') {
+        select_edge(img, polygone, focused_edge, is_poly);
+      }
     }
 
     I_draw(img);
@@ -126,6 +128,14 @@ void keyboard_CB(unsigned char key, int x, int y)
   // suppr
   case 127:
     delete_point(img, polygone, focused_point);
+
+    // correction de la position : ramenée au point précédent
+    if(focused_point == 0) {
+      focused_point = polygone->nb-1;
+    } else {
+      focused_point -= 1;
+    }
+
     break;
 	default : fprintf(stderr,"keyboard_CB : %d : unknown key.\n",key);
 	}
