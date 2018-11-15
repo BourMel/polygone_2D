@@ -229,6 +229,8 @@ void add_point_middle_edge(Image *img, poly *polygone, int position) {
       // insertion dans la liste chaînée
       current_node->next = new_node;
       new_node->next = next_node;
+
+      polygone->nb++;
     }
   }
 }
