@@ -17,5 +17,6 @@ int get_line_intersection(int Ax, int Ay, int Bx, int By, int Cx, int Cy, int Dx
 
 // remplissage d'un polygone
 void scan_line(Image *img, poly *polygone);
+void fill_polygone(Image *img, poly *polygone);
 
 #endif

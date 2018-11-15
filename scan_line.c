@@ -3,6 +3,11 @@
 #include "polygone.h"
 #include "scan_line.h"
 
+/**
+ * Calcul de la valeur minimale en X d'un polygone
+ * Params:
+ * Polygone
+ */
 int getXmin(poly *polygone) {
   int min;
 
@@ -29,6 +34,11 @@ int getXmin(poly *polygone) {
   return min;
 }
 
+/**
+ * Calcul de la valeur minimale en Y d'un polygone
+ * Params:
+ * Polygone
+ */
 int getYmin(poly *polygone) {
   int min;
 
@@ -55,7 +65,11 @@ int getYmin(poly *polygone) {
   return min;
 }
 
-
+/**
+ * Calcul de la valeur maximale en X d'un polygone
+ * Params:
+ * Polygone
+ */
 int getXmax(poly *polygone) {
   int max;
 
@@ -82,6 +96,11 @@ int getXmax(poly *polygone) {
   return max;
 }
 
+/**
+ * Calcul de la valeur maximale en Y d'un polygone
+ * Params:
+ * Polygone
+ */
 int getYmax(poly *polygone) {
   int max;
 
@@ -152,6 +171,33 @@ int get_line_intersection(int Ax, int Ay, int Bx, int By, int Cx, int Cy, int Dx
 }
 
 /**
+ * A partir d'un tableau de coordonnées, trace une ligne de remplissage
+ * (en reliant les points deux par deux, contrairement à I_polygone)
+ * Params:
+ * Image dans laquelle dessiner
+ * Liste chaînée à parcourir
+ */
+void fill_polygone(Image *img, poly *polygone) {
+  if(polygone != NULL) {
+    if(polygone->first != NULL) {
+      node *current_node = polygone->first;
+
+      // parcourt des différents points, et tracé
+      while((current_node != NULL) && (current_node->next != NULL)) {
+        I_bresenham(
+          img,
+          current_node->p.x,
+          current_node->p.y,
+          current_node->next->p.x,
+          current_node->next->p.y
+        );
+        current_node = current_node->next->next;
+      }
+    }
+  }
+}
+
+/**
  * Remplissage d'un polygone avec un algorithme scan line
  * Params:
  * Image
@@ -199,6 +245,13 @@ void scan_line(Image *img, poly *polygone) {
             inter_x, inter_y
           );
 
+          // on ne stocke qu'un point sur deux par segment (pour éviter de
+          // stocker 2 fois une intersection)
+          if(*inter_y == fmax(current_node->p.y, current_node->next->p.y)) {
+            // on ignore donc le cas où le point stocké est le Ymax d'un segment
+            has_intersection = false;
+          }
+
           // on stocke l'intersection si elle existe
           if(has_intersection) {
             insert_order(liste_inter, *inter_x, *inter_y);
@@ -217,6 +270,10 @@ void scan_line(Image *img, poly *polygone) {
           inter_x, inter_y
         );
 
+        if(*inter_y == fmax(polygone->last->p.y, polygone->first->p.y)) {
+          has_intersection = false;
+        }
+
         if(has_intersection) {
           insert_order(liste_inter, *inter_x, *inter_y);
         }
@@ -224,7 +281,7 @@ void scan_line(Image *img, poly *polygone) {
     }
 
     // lorsque une ligne a été analysée, on dessine (remplissage)
-    I_polygone(img, liste_inter);
+    fill_polygone(img, liste_inter);
     empty_polygone(liste_inter);
   }
 }
