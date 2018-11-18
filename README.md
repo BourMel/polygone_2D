@@ -30,7 +30,7 @@ Il est également possible de sélectionner un point en cliquant à proximité.
 
 Les touches directionnelles permettent de déplacer le point sélectionné dans le plan.
 
-La touche `suppr` permet de supprimer l'ensemble des points du polygone.
+La touche `suppr` permet de supprimer, un à un, l'ensemble des points du polygone.
 
 ### Mode edge
 
